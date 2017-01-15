@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html class="ui-mobile">
+	<head>
+		<title>阿武的天气</title>
+		<meta charset="utf-8">
+		<meta http-equiv="refresh" content="360" >
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<link rel="shortcut icon" href="../images/logo.png">
+		<link rel="stylesheet" href="http://bcs.duapp.com/kwandi/css/jquery.mobile-1.4.2.min.css">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link id="weathericon" rel="shortcut icon">
+        <!--<link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">-->
+        
+        <!--<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>-->
+		<!--<script src="http://bcs.duapp.com/kwandi/js/jquery-1.8.3.min.js"></script>-->
+		<script src="js/vendor/jquery-1.9.1.min.js"></script>
+		<script src="http://bcs.duapp.com/kwandi/js/jquery.mobile-1.4.2.min.js"></script>
+        <!--<script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>-->
+		
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <!--<script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src='//www.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>-->
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="http://www.szmb.gov.cn/design/index/js/lib.js"></script>
+        <script src="http://www.szmb.gov.cn/design/index/js/config.js"></script>
+        
+        <!-- Add your site or application content here -->
+        <script src="http://www.szmb.gov.cn/design/index/js/javascripts/prototype.js" type="text/javascript"></script>
+        <script src="http://www.szmb.gov.cn/design/index/js/javascripts/effects.js" type="text/javascript"></script>
+        <script src="http://www.szmb.gov.cn/design/index/js/javascripts/x.js" type="text/javascript"></script>
+        <script src="http://www.szmb.gov.cn/design/index/js/javascripts/x_util.js" type="text/javascript"></script>
+        <script src="http://www.szmb.gov.cn/design/index/js/javascripts/imageloop.js" type="text/javascript"></script>
+		
+		<style>
+			/* Start with core styles outside of a media query that apply to mobile and up */
+			/* Global typography and design elements, stacked containers */
+			/* body { font-family: Helvetica, san-serif; } */
+			body {font:normal 100%;}
+			/* H1 { color: green; }  */
+			h1 {font-size:1.5em;}
+			a:link { color:purple; }
+
+			/* Stack the two content containers */
+			.main,
+			.sidebar { display:block; width:100%; }
+			
+			/* First breakpoint at 576px */
+			/* Inherits mobile styles, but floats containers to make columns */
+			@media all and (min-width: 36em){
+				.main { float: left; width:60%; }
+				.sidebar { float: left; width:40%; }
+			}
+
+			/* Second breakpoint at 800px */
+			/* Adjusts column proportions, tweaks base H1 */
+			@media all and (min-width: 50em){
+				.main { width:70%; }
+				.sidebar { width:30%; }
+
+				/* You can also tweak any other styles in a breakpoint */
+				/* H1 { color: orange; font-size:1.2em } */
+			}
+			
+			div#nav-panel{width:12em;}
+			
+			.full {max-width: 100%; border:1px solid #ffffff; border-radius:2px; box-shadow: 1px 1px 2px #ffffff;}
+			p { word-wrap:break-word;text-align: left;}
+			
+			.center {
+				text-align: center;
+			}
+			
+			.desc {
+				position: absolute;
+				margin-top:20px;
+				margin-left:0px;
+				font-size:10px;
+				opacity:0.318;
+				background:#000000;
+			}
+			
+			.grade {
+				position: absolute;
+				margin-left:0px;
+				font-size:8px;
+				opacity:0.618;
+				background:#000000;
+			}
+			
+			.imgcon {
+				width: 32px;
+				length: 32px;
+			}
+			
+			.golden {
+				width:80%;
+			}
+			
+			.ui-table-reflow.ui-responsive {
+				display: table;
+			}
+			
+			.ui-select {
+				display:none;
+			}
+		</style>
+		<script>
+			function disableRightClick(e) 
+			{ 
+				if(!document.rightClickDisabled) // initialize 
+				{ 
+					if(document.layers) 
+					{ 
+						document.captureEvents(Event.MOUSEDOWN); 
+						document.onmousedown = disableRightClick; 
+					} 
+					else document.oncontextmenu = disableRightClick; 
+					return document.rightClickDisabled = true; 
+				} 
+				if(document.layers || (document.getElementById && !document.all)) 
+				{ 
+					if (e.which==2||e.which==3) 
+					{ 
+						return false; 
+					} 
+				} else { 
+					return false; 
+				} 
+			} 
+			disableRightClick();
+			
+            // Initial the global data path
+            DATA_PATH="http://www.szmb.gov.cn/data_cache/";
+		</script>
+		<!--[if lt IE 9]>
+　　　　	<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+　　	<![endif]-->
+	</head>
+	<body class="ui-body-b">
+		<div data-role="header" data-position="fixed" data-theme="a">
+		</div>
+		<div data-role="page" data-title="阿武的天气" id="szweather">
+			<div data-role="content" class="center">
+				<div class="ui-grid-solo ui-responsive">
+					<div class="ui-block-a">
+						<div data-theme="b" data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="cloud" class="ui-shadow ui-corner-all" style="text-align:left;">
+							<h3>卫星云图（中国）</h3>
+							<p class="desc">
+							风云-2C位于东经105度的赤道上空</br>
+							距离地面约35,800公里</br>
+							这颗卫星紧随地球的自转而运行</br>
+							相对于地面是静止不动的(故又名地球同步卫星)</br>
+							因此可以24小时不断拍摄地球上同一地区的云图</br>
+							红外云图观测云的温度</br>
+							一般云顶愈高，温度愈低</br>
+							在图像中也就显得越明亮
+							</p>
+							<div class="center" id="ctext">
+								<img class="cloud full" id="picturePreview" title="卫星云图" alt="卫星云图">
+								<select id="pictureSlt" onchange="changePicture(this);"></select>
+								<img src="http://www.szmb.gov.cn/design/index/images/btn_play.gif" onclick="playPicture(this)" id="playButton" title="播放" align="middle" style="Display:none">
+								<script type="text/javascript">
+									DATA_PATH="http://www.szmb.gov.cn/data_cache/";
+									createScript(DATA_PATH + "pictures/satPic/index.js?" + Math.random(), initPictureIndex);
+									function initPictureIndex() {
+										if (typeof SZ121_SatelliteCloudPicIndex == 'undefined') return;
+										var opt = document.getElementById('pictureSlt');
+										for (var i = 0, l = SZ121_SatelliteCloudPicIndex.length; i < l; i++) {
+											opt.options[opt.options.length] = new Option(SZ121_SatelliteCloudPicIndex[i].sDate, SZ121_SatelliteCloudPicIndex[i].pic);
+										}
+										var oImg = document.getElementById('picturePreview');
+										oImg.onload = function () {
+											if (oImg.readyState == "complete" || oImg.complete) {}
+										}
+										oImg.src = DATA_PATH + 'pictures/' + SZ121_SatelliteCloudPicIndex[0].pic;
+
+										playPicture();
+									}
+
+									function changePicture(o) {
+										var oImg = document.getElementById('picturePreview');
+										oImg.onload = function () {
+											if (oImg.readyState == "complete" || oImg.complete) {
+											}
+										}
+										oImg.src = DATA_PATH + 'pictures/' + o.value;
+									}
+
+									function prePicture() {
+										var opt = document.getElementById('pictureSlt');
+										if (opt.selectedIndex == opt.options.length - 1) return;
+										opt.selectedIndex += 1;
+										var oImg = document.getElementById('picturePreview');
+										oImg.onload = function () {
+											if (oImg.readyState == "complete" || oImg.complete) {}
+										}
+										oImg.src = DATA_PATH + 'pictures/' + SZ121_SatelliteCloudPicIndex[opt.selectedIndex].pic;
+									}
+
+									function nextPicture() {
+
+										var opt = document.getElementById('pictureSlt');
+										if (opt.selectedIndex == 0) {
+											if (document.getElementById('playButton').title == "停止") {
+												setTimeout("document.getElementById('playButton').title='播放';playPicture();", 1500);
+											}
+											return;
+										}
+										opt.selectedIndex -= 1;
+										var oImg = document.getElementById('picturePreview');
+										oImg.onload = function () {
+											if (oImg.readyState == "complete" || oImg.complete) {
+												if (document.getElementById('playButton').title == "停止")
+													setTimeout(nextPicture, 1000);
+											}
+										}
+										oImg.src = DATA_PATH + 'pictures/' + SZ121_SatelliteCloudPicIndex[opt.selectedIndex].pic;
+									}
+
+									function playPicture() {
+										var img = document.getElementById('playButton');
+										if (img.title == "播放") {
+											img.title = "停止";
+											var opt = document.getElementById('pictureSlt');
+											opt.selectedIndex = opt.options.length - 1;
+											var oImg = document.getElementById('picturePreview');
+											oImg.onload = function () {
+												if (oImg.readyState == "complete" || oImg.complete) {
+													setTimeout(nextPicture, 1000);
+												}
+											}
+											oImg.src = DATA_PATH + 'pictures/' + SZ121_SatelliteCloudPicIndex[opt.selectedIndex].pic;
+										} else {
+											img.title = "播放";
+										}
+									}
+								</script>
+							</div>
+						</div>
+					</div>
+					<div class="ui-block-a">
+						<div data-theme="b" data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="calendar" class="ui-shadow ui-corner-all" style="text-align:right;">
+							<h3>降雨估测（广东）</h3>
+							<p class="desc">
+							非常实用，估测未来1小时降雨</br>
+							看颜色深浅知雨量大小</br>
+							看运动方向知雨云走势
+							</p>
+							<div class="center" id="rtext">
+								<img class="rain full" title="降雨估测" alt="降雨估测" id="chartImage" src=""/>
+								<script language="javascript" type="text/javascript">
+									window.animator = new Animator();
+
+									animator.targetId = "chartImage";
+
+									animator.imageSrcs = [];
+								
+									createScript(DATA_PATH + "pictures/forDayun/bigQpe/index-1.js?" + Math.random(), initYun);
+
+									function initYun() {
+
+										if (typeof DAYUN_QpeBigPic == 'undefined') return;
+
+										j = 0;
+
+										for (var i = 0; i < DAYUN_QpeBigPic.length; i++) {
+
+											animator.imageSrcs[j] = DATA_PATH + DAYUN_QpeBigPic[i];
+
+											j++;
+
+										}
+										animator.init();
+									}
+
+									animator.times = [30000, 60000, 90000, 120000, 150000, 180000, 210000, 240000, 270000, 300000, 330000, 360000, 390000, 420000, 450000, 480000]
+
+									function getTauElement(index) {
+
+										return $("tauCell" + animator.times[index]);
+
+									}
+
+									var yft = {
+
+										_shade: {
+											0: '#04679a',
+											1: '#1975a5',
+											2: '#2f84b0',
+											3: '#4593bc',
+											4: '#5ba2c7',
+											5: '#71b1d2',
+											6: '#87c0de'
+										},
+
+										fadeIn: function (e, i, j) {
+
+											var elem = $(e);
+
+											if (!elem) return;
+
+											if (i >= 1) {
+
+												elem.style.backgroundColor = this._shade[i];
+
+												i -= 1;
+
+												setTimeout("yft.fadeIn('" + elem.id + "'," + i + "," + j + ")", 200);
+
+											} else if (elem.id.substr(7) >= 210000)
+
+											{
+
+												elem.style.backgroundColor = 'rgb(255, 103, 154)';
+
+											}
+
+										}
+
+									}
+
+									animator.imageLoadedCallback = function (i) {
+
+										var t = getTauElement(i);
+
+										yft.fadeIn(t, 7, i);
+
+										animator.numToLoad--;
+
+										animator.gotoIndex(i);
+
+										if (animator.numToLoad == 0) {
+
+											animator.startRunning();
+
+										}
+
+									}
+								</script>
+							</div>
+						</div>
+					</div>
+					<div class="ui-block-a">
+						<div data-theme="b" data-role="collapsible" data-collapsed="false" data-collapsed-icon="carat-d" data-expanded-icon="info" class="ui-shadow ui-corner-all" style="text-align:left;">
+							<h3>天气预报（深圳）</h3>
+							<div class="weafor" id="weafor-intro">
+								<div id="today_icon">
+									<img class="imgcon" id="weather_icon2_0">
+									<img class="imgcon" id="weather_icon2_1">
+									<p id="report"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="ui-block-a">
+						<div data-theme="b" data-role="collapsible" data-collapsed="false" data-collapsed-icon="carat-d" data-expanded-icon="info" class="ui-shadow ui-corner-all" style="text-align:left;">
+							<h3>天气趋势（深圳）</h3>
+							<div class="alarm" id="alarm_tip_id"></div>
+						</div>
+					</div>
+					<script type="text/javascript" src="http://www.szmb.gov.cn/design/index/js/raphael-min.js"></script>
+					<script type="text/javascript">
+						DATA_PATH="http://www.szmb.gov.cn/data_cache/";
+						createScript(DATA_PATH + "szWeather/sz10day_new.js?random=" + Math.random(), init10dayWeather_new);
+
+						function init10dayWeather_new() {
+							if (typeof SZ121_10dayWeather == 'undefined') return;
+							SZ121_10dayWeather2 = SZ121_10dayWeather;
+
+							document.getElementById("alarm_tip_id").innerHTML = "【天气趋势】" + SZ121_10dayWeather2.today.trend + "（深圳气象局 " + SZ121_10dayWeather2.pubDate + " 发布）";
+							document.getElementById("alarm_tip_id").title = "深圳气象局" + SZ121_10dayWeather2.pubDate + "发布。";
+							document.getElementById("report").innerHTML = "【天气预报】" + SZ121_10dayWeather2.today.report + "。";
+
+							var next_pubDate = SZ121_10dayWeather2.today.reporttime;
+							var pubhour = next_pubDate.substr(11, 2);
+							if (pubhour == "06") {
+								next_pubDate = formatDate(SZ121_10dayWeather2.today.reporttime, 'M-D', 0) + '11时';
+							} else if (pubhour == "11") {
+								next_pubDate = formatDate(SZ121_10dayWeather2.today.reporttime, 'M-D', 0) + '16时';
+							} else {
+								next_pubDate = formatDate(SZ121_10dayWeather2.today.reporttime, 'M-D', 1) + '6时';
+							}
+							if (typeof SZ121_10dayWeather2.today.nextIcon != 'undefined' && SZ121_10dayWeather2.today.nextIcon) {
+								document.getElementById("today_icon").innerHTML = "<table><td><img class='imgcon' id='weather_icon2_0' src='http://www.szmb.gov.cn/design/index/images/weather_icon2/" + SZ121_10dayWeather2.today.icon + ".png'></td><td><p style='text-shadow: 1px 1px 1px #FF0000;'>&nbsp;转</p></td><td><img class='imgcon' id='weather_icon2_1'src='http://www.szmb.gov.cn/design/index/images/weather_icon2/" + SZ121_10dayWeather2.today.nextIcon + ".png'></td><td><p id='report'>【天气预报】" + SZ121_10dayWeather2.today.report + "（深圳气象局 " + SZ121_10dayWeather2.pubDate + " 更新）。" + "</p></td></table>";
+								document.getElementById("weather_icon2_1").title = '下次更新时间：' + next_pubDate;
+							} else {
+								document.getElementById("today_icon").innerHTML = "<table><td><img class='imgcon' id='weather_icon2_0' src='http://www.szmb.gov.cn/design/index/images/weather_icon2/" + SZ121_10dayWeather2.today.icon + ".png'></td><td><p id='report'>【天气预报】" + SZ121_10dayWeather2.today.report + "（深圳气象局 " + SZ121_10dayWeather2.pubDate + " 更新）。" + "</p></td></table>";
+							}
+							document.getElementById("weathericon").href = 'http://www.szmb.gov.cn/design/index/images/weather_icon2/' + SZ121_10dayWeather2.today.icon + '.png';
+							document.getElementById("weather_icon2_0").title = '本次更新时间：' + SZ121_10dayWeather2.pubDate;
+						}
+					</script>
+					<div class="ui-block-a">
+						<div data-theme="b" data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="gear" class="ui-shadow ui-corner-all" style="text-align:left;">
+							<h3>温度分布（深圳）</h3>
+							<p class="desc">
+							看颜色深浅知温度高低</br>
+							每6分钟1次</br>
+							共10张图
+							</p>
+							<div class="center" id="ttext">
+								<img class="temp full" id="temp_img_url" title="温度分布" alt="温度分布">
+								<script type="text/javascript">
+									function gettemp() {
+										document.getElementById('temp_img_url').src = DATA_PATH + 'pictures/distributed/temperatureLast1HourGif.gif';
+										setTimeout("gettemp()", 12000);
+									}
+									gettemp();
+								</script>
+							</div>
+						</div>
+					</div>
+				    <div class="ui-block-a">
+						<div data-theme="b" data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="recycle" class="ui-shadow ui-corner-all" style="text-align:left;">
+							<h3>风速分布（深圳）</h3>
+							<p class="desc">
+							看颜色深浅知风力等级</br>
+							每6分钟1次</br>
+							共10张图
+							</p>
+							<div class="center" id="wtext">
+								<img class="wind full" id="wind_img_url" title="风速分布" alt="风速分布">
+								<script type="text/javascript">
+									function getwind() {
+										document.getElementById('wind_img_url').src = DATA_PATH + 'pictures/distributed/windLast1HourGif.gif?random=' + Math.random();
+										setTimeout("getwind()", 12000);
+									}
+									getwind();
+								</script>
+							</div>
+						</div>
+					</div>
+					<div class="ui-block-a">
+						<div data-theme="b" data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="recycle" class="ui-shadow ui-corner-all" style="text-align:left;">
+							<h3>台风路径（区域）</h3>
+							<p class="desc">
+							中国东南沿海区域</br>
+							<table class="grade" style="margin-top:40px;">
+								<td><img src="img/G.png"/></td>
+								<td>热带低压</td>
+								<td><img src="img/B.png"/></td>
+								<td>热带风暴</td>
+								<td><img src="img/Y.png"/></td>
+								<td>强热带风暴</td>
+							</table>
+							<table class="grade" style="margin-top:65px;">
+								<td><img src="img/O.png"/></td>
+								<td>台风</td>
+								<td><img src="img/Z.png"/></td>
+								<td>强台风</td>
+								<td><img src="img/R.png"/></td>
+								<td>超强台风</td>
+							</table>
+							</p>
+							<div class="center" id="lo">
+								<img class="full" id="divimg" title="台风路径" alt="台风路径" src="http://www.shenzhentaifeng.com/images/temp/lo.png">
+							</div>
+							</br>
+							<p class="desc">
+							中国南海区域</br>
+							</p>
+							<div class="center" id="SouthSea">
+								<img class="full" id="divimg" title="台风路径" alt="台风路径" src="http://www.shenzhentaifeng.com/images/temp/SouthSea.png">
+							</div>
+							</br>
+							<p class="desc">
+							西太平洋区域</br>
+							</p>
+							<div class="center" id="WestPacific">
+								<img class="full" id="divimg" title="台风路径" alt="台风路径" src="http://www.shenzhentaifeng.com/images/temp/WestPacific.png">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ui-grid-solo ui-responsive">
+					<div class="ui-block-a">
+						<p class="center"><b>扫一扫：马上分享给您的朋友</b></p>
+						<img class="ui-shadow ui-corner-all" src="img/qrcode.png"/>
+						<p class="center"><b>所有气象数据均为深圳气象局版权所有</b></p>
+						<p class="center"><b>如需了解更详细的天气情况，请直接访问</b></p>
+						<a class="center" href="http://www.szmb.gov.cn"><b>http://www.szmb.gov.cn</b></a>
+						<p class="center"><b>深圳气象局官方网址</b></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div data-role="footer" data-position="fixed" data-theme="a">
+		</div>
+		<!-- JiaThis Button BEGIN 
+		<script type="text/javascript" >
+		var jiathis_config={
+			url:"http://weathersz.sinaapp.com/",
+			summary:"实时、动态查看天气",
+			title:"阿武的天气 ##",
+			showClose:true,
+			shortUrl:true,
+			hideMore:false
+		}
+		</script>
+		<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jiathis_r.js?btn=r2.gif&move=1" charset="utf-8"></script>
+		<!-- JiaThis Button END -->
+	</body>
+</html>
