@@ -136,8 +136,8 @@
 			} 
 			disableRightClick();
 			
-            // Initial the global data path
-            DATA_PATH="http://www.szmb.gov.cn/data_cache/";
+      // Initial the global data path
+      DATA_PATH="http://www.szmb.gov.cn/data_cache/";
 		</script>
 		<!--[if lt IE 9]>
 　　　　	<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
@@ -152,6 +152,7 @@
 					<div class="ui-block-a">
 						<div data-theme="b" data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="cloud" class="ui-shadow ui-corner-all" style="text-align:left;">
 							<h3>卫星云图（中国）</h3>
+							<!--
 							<p class="desc">
 							风云-2C位于东经105度的赤道上空</br>
 							距离地面约35,800公里</br>
@@ -162,6 +163,7 @@
 							一般云顶愈高，温度愈低</br>
 							在图像中也就显得越明亮
 							</p>
+							-->
 							<div class="center" id="ctext">
 								<img class="cloud full" id="picturePreview" title="卫星云图" alt="卫星云图">
 								<select id="pictureSlt" onchange="changePicture(this);"></select>
@@ -248,11 +250,13 @@
 					<div class="ui-block-a">
 						<div data-theme="b" data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="calendar" class="ui-shadow ui-corner-all" style="text-align:right;">
 							<h3>降雨估测（广东）</h3>
+							<!--
 							<p class="desc">
 							非常实用，估测未来1小时降雨</br>
 							看颜色深浅知雨量大小</br>
 							看运动方向知雨云走势
 							</p>
+							-->
 							<div class="center" id="rtext">
 								<img class="rain full" title="降雨估测" alt="降雨估测" id="chartImage" src=""/>
 								<script language="javascript" type="text/javascript">
@@ -400,11 +404,13 @@
 					<div class="ui-block-a">
 						<div data-theme="b" data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="gear" class="ui-shadow ui-corner-all" style="text-align:left;">
 							<h3>温度分布（深圳）</h3>
+							<!--
 							<p class="desc">
 							看颜色深浅知温度高低</br>
 							每6分钟1次</br>
 							共10张图
 							</p>
+							-->
 							<div class="center" id="ttext">
 								<img class="temp full" id="temp_img_url" title="温度分布" alt="温度分布">
 								<script type="text/javascript">
@@ -420,11 +426,13 @@
 				    <div class="ui-block-a">
 						<div data-theme="b" data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="recycle" class="ui-shadow ui-corner-all" style="text-align:left;">
 							<h3>风速分布（深圳）</h3>
+							<!--
 							<p class="desc">
 							看颜色深浅知风力等级</br>
 							每6分钟1次</br>
 							共10张图
 							</p>
+							-->
 							<div class="center" id="wtext">
 								<img class="wind full" id="wind_img_url" title="风速分布" alt="风速分布">
 								<script type="text/javascript">
@@ -440,28 +448,15 @@
 				 </div>
 				<div class="ui-grid-solo ui-responsive">
 					<div class="ui-block-a">
-						<p class="center"><b>所有气象数据均为深圳气象局版权所有</b></p>
-						<p class="center"><b>如需了解更详细的天气情况，请直接访问</b></p>
-						<a class="center" href="http://www.szmb.gov.cn"><b>http://www.szmb.gov.cn</b></a>
-						<p class="center"><b>深圳气象局官方网址</b></p>
+						<h6 class="center"><b>所有气象数据均来自深圳气象局</b></h6>
+						<h6 class="center"><b>如需了解更详细的天气情况，请直接访问</b></h6>
+						<h6><a class="center" href="http://www.szmb.gov.cn"><b>http://www.szmb.gov.cn</b></a></h6>
+						<h6 class="center"><b>（深圳气象局官方网址）</b></h6>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div data-role="footer" data-position="fixed" data-theme="a">
 		</div>
-		<!-- JiaThis Button BEGIN 
-		<script type="text/javascript" >
-		var jiathis_config={
-			url:"http://weathersz.sinaapp.com/",
-			summary:"实时、动态查看天气",
-			title:"阿武的天气 ##",
-			showClose:true,
-			shortUrl:true,
-			hideMore:false
-		}
-		</script>
-		<script type="text/javascript" src="http://v3.jiathis.com/code_mini/jiathis_r.js?btn=r2.gif&move=1" charset="utf-8"></script>
-		<!-- JiaThis Button END -->
 	</body>
 </html>
