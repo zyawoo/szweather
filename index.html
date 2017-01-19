@@ -379,9 +379,9 @@
 							if (typeof SZ121_10dayWeather == 'undefined') return;
 							SZ121_10dayWeather2 = SZ121_10dayWeather;
 
-							document.getElementById("alarm_tip_id").innerHTML = "【天气趋势】" + SZ121_10dayWeather2.today.trend + "</br>（深圳气象局 " + SZ121_10dayWeather2.pubDate + " 发布）";
+							document.getElementById("alarm_tip_id").innerHTML = SZ121_10dayWeather2.today.trend + "（深圳气象局 " + SZ121_10dayWeather2.pubDate + " 发布）";
 							document.getElementById("alarm_tip_id").title = "深圳气象局" + SZ121_10dayWeather2.pubDate + "发布。";
-							document.getElementById("report").innerHTML = "【天气预报】" + SZ121_10dayWeather2.today.report + "。";
+							document.getElementById("report").innerHTML = SZ121_10dayWeather2.today.report + "。";
 
 							var next_pubDate = SZ121_10dayWeather2.today.reporttime;
 							var pubhour = next_pubDate.substr(11, 2);
@@ -393,10 +393,10 @@
 								next_pubDate = formatDate(SZ121_10dayWeather2.today.reporttime, 'M-D', 1) + '6时';
 							}
 							if (typeof SZ121_10dayWeather2.today.nextIcon != 'undefined' && SZ121_10dayWeather2.today.nextIcon) {
-								document.getElementById("today_icon").innerHTML = "<table><td><img class='imgcon' id='weather_icon2_0' src='http://www.szmb.gov.cn/design/index/images/weather_icon2/" + SZ121_10dayWeather2.today.icon + ".png'></td><td><h6 style='text-shadow: 1px 1px 1px #333333;'>&nbsp;转</h6></td><td><img class='imgcon' id='weather_icon2_1'src='http://www.szmb.gov.cn/design/index/images/weather_icon2/" + SZ121_10dayWeather2.today.nextIcon + ".png'></td><td><p id='report'>【天气预报】" + SZ121_10dayWeather2.today.report + "。</br>（深圳气象局 " + SZ121_10dayWeather2.pubDate + " 更新）。" + "</p></td></table>";
+								document.getElementById("today_icon").innerHTML = "<table><td><img class='imgcon' id='weather_icon2_0' src='http://www.szmb.gov.cn/design/index/images/weather_icon2/" + SZ121_10dayWeather2.today.icon + ".png'></td><td><h6 style='text-shadow: 1px 1px 1px #333333;'>&nbsp;转</h6></td><td><img class='imgcon' id='weather_icon2_1'src='http://www.szmb.gov.cn/design/index/images/weather_icon2/" + SZ121_10dayWeather2.today.nextIcon + ".png'></td><td><p id='report'>" + SZ121_10dayWeather2.today.report + "。（深圳气象局 " + SZ121_10dayWeather2.pubDate + " 更新）。" + "</p></td></table>";
 								document.getElementById("weather_icon2_1").title = '下次更新时间：' + next_pubDate;
 							} else {
-								document.getElementById("today_icon").innerHTML = "<table><td><img class='imgcon' id='weather_icon2_0' src='http://www.szmb.gov.cn/design/index/images/weather_icon2/" + SZ121_10dayWeather2.today.icon + ".png'></td><td><p id='report'>【天气预报】" + SZ121_10dayWeather2.today.report + "。</br>（深圳气象局 " + SZ121_10dayWeather2.pubDate + " 更新）。" + "</p></td></table>";
+								document.getElementById("today_icon").innerHTML = "<table><td><img class='imgcon' id='weather_icon2_0' src='http://www.szmb.gov.cn/design/index/images/weather_icon2/" + SZ121_10dayWeather2.today.icon + ".png'></td><td><p id='report'>" + SZ121_10dayWeather2.today.report + "。</br>（深圳气象局 " + SZ121_10dayWeather2.pubDate + " 更新）。" + "</p></td></table>";
 							}
 							document.getElementById("weathericon").href = 'http://www.szmb.gov.cn/design/index/images/weather_icon2/' + SZ121_10dayWeather2.today.icon + '.png';
 							document.getElementById("weather_icon2_0").title = '本次更新时间：' + SZ121_10dayWeather2.pubDate;
